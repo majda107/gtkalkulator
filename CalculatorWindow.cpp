@@ -22,8 +22,16 @@ CalculatorWindow::CalculatorWindow() {
                 sigc::bind<int>(sigc::mem_fun(*this, &CalculatorWindow::m_button_press), i + 1));
     }
 
+    for (int i = 0; i < 4; i++) {
+        this->m_number_grid.attach(this->m_operations[i], 3, 1 + i);
+        this->m_operations[i].set_label(std::string(1, this->m_operation_chars[i]));
+        this->m_operations[i].signal_clicked().connect(
+                sigc::bind<char>(sigc::mem_fun(*this, &CalculatorWindow::m_operation_press),
+                                 this->m_operation_chars[i]));
+    }
+
 //    this->m_op_grid.add(this->m_result_button);
-    this->m_number_grid.attach(this->m_result_button, 1, 5);
+    this->m_number_grid.attach(this->m_result_button, 1, 4);
     this->m_result_button.signal_clicked().connect(
             sigc::bind<int>(sigc::mem_fun(*this, &CalculatorWindow::m_button_press), 10));
     this->m_result_button.set_label("=");
@@ -32,6 +40,32 @@ CalculatorWindow::CalculatorWindow() {
 //    this->m_op_grid.show_all();
 
     this->m_print_result();
+}
+
+void CalculatorWindow::m_operation_press(char op) {
+    if (this->m_op != 0) {
+        this->m_sum = this->m_operate(this->m_op, this->m_sum, this->m_last);
+        this->m_print_result();
+    }
+
+    this->m_op = op;
+    this->m_last = this->m_sum;
+    this->m_sum = 0;
+}
+
+float CalculatorWindow::m_operate(char op, float n, float m) {
+    switch (op) {
+        case '+':
+            return n + m;
+        case '-':
+            return n - m;
+        case '*':
+            return n * m;
+        case '/':
+            return n / m;
+    }
+
+    return 0;
 }
 
 void CalculatorWindow::m_print_result() {
@@ -49,16 +83,25 @@ void CalculatorWindow::m_print_result() {
 }
 
 void CalculatorWindow::m_button_press(int num) {
-//    std::cout << num << std::endl;
+////    std::cout << num << std::endl;
+//    if (num == 10) {
+//        this->m_sum += this->m_last;
+//        this->m_print_result();
+//        this->m_sum = this->m_last = 0;
+//        return;
+//    }
+//
+//    this->m_last = num;
+//    this->m_sum /= this->m_last;
+//
+//    this->m_print_result();
+
     if (num == 10) {
-        this->m_sum += this->m_last;
+        this->m_sum = this->m_operate(this->m_op, this->m_sum, this->m_last);
         this->m_print_result();
-        this->m_sum = this->m_last = 0;
         return;
     }
 
-    this->m_last = num;
-    this->m_sum /= this->m_last;
-
+    this->m_sum = this->m_sum * 10 + num;
     this->m_print_result();
 }
