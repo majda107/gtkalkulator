@@ -39,13 +39,13 @@ CalculatorWindow::CalculatorWindow() {
     this->m_number_grid.show_all();
 //    this->m_op_grid.show_all();
 
-    this->m_print_result();
+    this->m_print_result(this->m_sum);
 }
 
 void CalculatorWindow::m_operation_press(char op) {
     if (this->m_op != 0) {
         this->m_sum = this->m_operate(this->m_op, this->m_sum, this->m_last);
-        this->m_print_result();
+        this->m_print_result(this->m_sum);
     }
 
     this->m_op = op;
@@ -68,8 +68,8 @@ float CalculatorWindow::m_operate(char op, float n, float m) {
     return 0;
 }
 
-void CalculatorWindow::m_print_result() {
-    auto val = std::to_string(this->m_sum);
+void CalculatorWindow::m_print_result(float n) {
+    auto val = std::to_string(n);
     bool dot = false;
     auto cut = 0;
 
@@ -97,11 +97,12 @@ void CalculatorWindow::m_button_press(int num) {
 //    this->m_print_result();
 
     if (num == 10) {
-        this->m_sum = this->m_operate(this->m_op, this->m_sum, this->m_last);
-        this->m_print_result();
+        this->m_last = this->m_operate(this->m_op, this->m_sum, this->m_last);
+        this->m_print_result(this->m_last);
+//        this->m_sum = 0;
         return;
     }
 
     this->m_sum = this->m_sum * 10 + num;
-    this->m_print_result();
+    this->m_print_result(this->m_sum);
 }

@@ -21,7 +21,7 @@ private:
 
     float m_operate(char op, float n, float m);
 
-    void m_print_result();
+    void m_print_result(float n);
 
     double m_sum = 0;
     double m_last = 0;
