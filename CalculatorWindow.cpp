@@ -54,7 +54,7 @@ CalculatorWindow::CalculatorWindow() {
 
     this->m_number_grid.set_size_request(30, 30);
 
-    this->m_refresh(this->m_sum);
+    this->m_refresh(0);
 }
 
 void CalculatorWindow::m_operation_press(char op) {
@@ -92,7 +92,7 @@ void CalculatorWindow::m_clear() {
     this->m_refresh(0);
 }
 
-float CalculatorWindow::m_operate(char op, float n, float m) {
+double CalculatorWindow::m_operate(char op, double n, double m) {
     switch (op) {
         case '+':
             return n + m;
@@ -101,6 +101,7 @@ float CalculatorWindow::m_operate(char op, float n, float m) {
         case '*':
             return n * m;
         case '/':
+            if (m == 0) return NAN;
             return n / m;
     }
 
@@ -128,26 +129,6 @@ void CalculatorWindow::m_refresh(float n) {
 }
 
 void CalculatorWindow::m_button_press(int num) {
-//    if (num == 10) {
-//        this->m_sum += this->m_last;
-//        this->m_print_result();
-//        this->m_sum = this->m_last = 0;
-//        return;
-//    }
-//
-//    this->m_last = num;
-//    this->m_sum /= this->m_last;
-//
-//    this->m_print_result();
-
-//    if (num == 10) {
-//        this->m_last = this->m_operate(this->m_op, this->m_sum, this->m_last);
-//        this->m_print_result(this->m_last);
-//        return;
-//    }
-//
-//    this->m_sum = this->m_sum * 10 + num;
-//    this->m_print_result(this->m_sum);
 
     if (num == 10) {
 //        auto tmp = this->m_buffer;
@@ -155,7 +136,7 @@ void CalculatorWindow::m_button_press(int num) {
 //        this->m_input = std::to_string(this->m_operate(this->m_op, tmp, this->m_buffer));
 //        this->m_input = std::to_string(this->m_operate(this->m_op, tmp, this->m_buffer));
 
-        this->m_buffer = this->m_operate(this->m_op, std::stod(this->m_input), this->m_buffer);
+        this->m_buffer = this->m_operate(this->m_op, this->m_buffer, std::stod(this->m_input));
         this->m_result = std::to_string(this->m_buffer);
 //        this->m_input = std::to_string(this->m_buffer2);
 
@@ -167,6 +148,8 @@ void CalculatorWindow::m_button_press(int num) {
 //        this->m_refresh(0);
     }
 
-    this->m_input += std::to_string(num);
+    if (this->m_input.size() > 0 || num != 0)
+        this->m_input += std::to_string(num);
+
     this->m_refresh(0);
 }

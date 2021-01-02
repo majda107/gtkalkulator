@@ -23,7 +23,7 @@ private:
 
     void m_clear();
 
-    float m_operate(char op, float n, float m);
+    double m_operate(char op, double n, double m);
 
     void m_refresh(float n);
 
@@ -33,8 +33,8 @@ private:
     double m_buffer = 0;
 //    double m_buffer2 = 0;
 
-    double m_sum = 0;
-    double m_last = 0;
+//    double m_sum = 0;
+//    double m_last = 0;
     char m_op = 0;
 
     Gtk::Grid m_number_grid;
