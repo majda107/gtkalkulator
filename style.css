@@ -1,0 +1,40 @@
+button {
+    border-radius: 100px;
+
+    background: #333333;
+    border: none;
+    outline: none;
+    color: #FFFFFF;
+
+    font-size: 20px;
+    box-shadow: none;
+}
+
+button:hover {
+    opacity: 0.7;
+}
+
+
+.gray {
+    background: #a6a6a6;
+    color: #000000;
+    text-shadow: none;
+}
+
+.orange {
+    background: #f39937;
+}
+
+.window {
+    background-color: #000000;
+}
+
+.result {
+    font-size: 34px;
+    color: #ffffff;
+    /*text-align: right;*/
+}
+
+.grid {
+    margin: 10px;
+}

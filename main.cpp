@@ -8,20 +8,11 @@ int main(int argc, char *argv[]) {
     auto app =
             Gtk::Application::create(argc, argv,
                                      "org.gtkmm.examples.base");
-
-//    Gtk::Window window;
-//    window.set_default_size(200, 200);
-
     CalculatorWindow calc;
 
-//    auto b = Gtk::Builder::create_from_file("gui.glade");
-//    auto b = Gtk::Builder::create_from_file("gui.glade");
-
-//    FrmMain *win = 0;
-//    b->get_widget("main", win);
-
     Glib::RefPtr<Gtk::CssProvider> cssProvider = Gtk::CssProvider::create();
-    cssProvider->load_from_data("button {color: #C71EFF; border-radius: 100px;}");
+//    cssProvider->load_from_data("button {color: #C71EFF; border-radius: 100px;}");
+    cssProvider->load_from_path("../style.css");
 
     Glib::RefPtr<Gtk::StyleContext> styleContext = Gtk::StyleContext::create();
 
