@@ -188,12 +188,16 @@ void CalculatorWindow::m_button_press(int num) {
 
         try {
 
-            this->m_buffer = this->m_operate(this->m_op, this->m_buffer, std::stod(this->m_input));
+            std::cout << this->m_input << std::endl;
+
+            auto num = this->m_input == "" ? 0 : std::stod(this->m_input);
+
+            this->m_buffer = this->m_operate(this->m_op, this->m_buffer, num);
             this->m_result = std::to_string(this->m_buffer);
             this->m_refresh();
 
         } catch (std::exception e) {
-            std::cout << e.what() << std::endl;
+            std::cout << "error " << e.what() << std::endl;
         }
 
         return;
