@@ -80,21 +80,52 @@ CalculatorWindow::CalculatorWindow() {
 
 void CalculatorWindow::m_operation_press(char op) {
 
-    this->m_op = op;
-
     try {
 
-        // BUFFER RESULT IF ITS NOT EMPTY
-        if (this->m_result != "")
-            this->m_buffer = std::stod(this->m_result);
-        else
-            this->m_buffer = std::stod(this->m_input);
+//        // BUFFER RESULT IF ITS NOT EMPTY
+//        if (this->m_buffer != 0) {
+//            this->m_result = this->m_operate(this->m_op, )
+//            this->m_buffer = std::stod(this->m_result);
+//        } else
+//           this->m_buffer = this->m_operate(this->m_op, this->m_buffer, std::stod(this->m_input));
+//            this->m_buffer = std::stod(this->m_input);
+
+
+
+// WORKING
+
+//        if (this->m_buffer != 0) {
+//            auto res = this->m_operate(this->m_op, this->m_buffer, std::stod(this->m_input));
+//            this->m_result = std::to_string(res);
+//            this->m_buffer = res;
+//            std::cout << "using back calc" << res << std::endl;
+//        } else {
+//            this->m_buffer = std::stod(this->m_input);
+//            this->m_result = "";
+//        }
+
+        this->m_buffer = this->m_result == "" ? 0 : std::stod(this->m_result);
+
+        if (this->m_result != "") {
+            std::cout << "BACK RESULT" << std::endl;
+
+            this->m_result = std::to_string(
+                    this->m_operate(this->m_op, std::stod(this->m_input), std::stod(this->m_result)));
+        } else {
+            this->m_result = this->m_input;
+        }
+
+//        std::cout << this->m_buffer << " " << this->m_input << std::endl;
 
     } catch (std::exception e) {
         std::cout << e.what() << std::endl;
     }
 
-    this->m_input = this->m_result = "";
+    this->m_op = op;
+
+
+//    this->m_input = this->m_result = "";
+    this->m_input = "";
     this->m_refresh();
 }
 
@@ -150,17 +181,16 @@ double CalculatorWindow::m_operate(char op, double n, double m) {
 }
 
 void CalculatorWindow::m_refresh() {
-//    auto val = std::to_string(n);
-    auto val = this->m_input;
-    if (this->m_result != "") val = this->m_result;
+//    auto val = this->m_input;
+//    if (this->m_result != "") val = this->m_result;
+
+    std::cout << this->m_input << std::endl;
+
+    auto val = this->m_input == "" ? this->m_result : this->m_input;
+//    if (this->m_input != "") val = this->m_input;
+
 
     bool dot = false;
-//    auto cut = 0;
-//    auto last_nonzero;
-//
-//    while ((cut < val.size()) && (!dot || val[cut] != '0')) {
-//        if (val[cut++] == '.') dot = true;
-//    }
 
     auto lnz = val.size();
 //    auto dot = 0;
@@ -190,10 +220,26 @@ void CalculatorWindow::m_button_press(int num) {
 
             std::cout << this->m_input << std::endl;
 
-            auto num = this->m_input == "" ? 0 : std::stod(this->m_input);
+            double num = 0;
+//            if (this->m_input != "") {
+//                num = this->m_buffer;
+//                this->m_buffer = std::stod(this->m_input);
+//            } else {
+//                num = std::stod(this->m_result);
+//            }
 
-            this->m_buffer = this->m_operate(this->m_op, this->m_buffer, num);
-            this->m_result = std::to_string(this->m_buffer);
+            if (this->m_input != "") {
+                this->m_buffer = std::stod(this->m_input);
+            }
+
+            num = std::stod(this->m_result);
+
+//            auto num = this->m_input == "" ? std::stod(this->m_result) : std::stod(this->m_input);
+            this->m_input = "";
+
+//            this->m_buffer = this->m_operate(this->m_op, this->m_buffer, num);
+            auto res = this->m_operate(this->m_op, num, this->m_buffer);
+            this->m_result = std::to_string(res);
             this->m_refresh();
 
         } catch (std::exception e) {
@@ -206,12 +252,15 @@ void CalculatorWindow::m_button_press(int num) {
     }
 
     // CLEAR IF OVERRIDING PREV RESULT
-    if (this->m_result != "")
-        this->m_clear();
+//    if (this->m_result != "")
+//        this->m_clear();
 
 
-    if (this->m_input.size() > 0 || num != 0)
+    if (this->m_input == "0" && num == 0) {
+
+    } else {
         this->m_input += std::to_string(num);
+    }
 
     this->m_refresh();
 }
